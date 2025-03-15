@@ -154,11 +154,11 @@ export const DoodleCanvas: React.FC<DoodleCanvasProps> = ({ onSave, onCancel }) 
             <path 
               d="${generatePath(line)}" 
               stroke="${line.color}" 
-              strokeWidth="${line.width}" 
+              strokeWidth="${line.width * 1.5}" 
               fill="none" 
               strokeLinecap="round" 
               strokeLinejoin="round"
-              vectorEffect="non-scaling-stroke"
+              vector-effect="non-scaling-stroke"
             />
           `,
           )
