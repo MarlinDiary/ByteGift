@@ -23,7 +23,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
       <div
         className="
         relative 
-        h-30 
+        h-32
         rounded-t-2xl 
         flex justify-center items-center
         border-2 border-white/30

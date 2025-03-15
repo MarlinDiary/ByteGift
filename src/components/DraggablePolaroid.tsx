@@ -123,8 +123,7 @@ export const DraggablePolaroid: React.FC<DraggablePolaroidProps> = ({
   return (
     <div
       ref={polaroidRef}
-      className={`absolute transition-shadow duration-300 rounded-md overflow-hidden ${isDragging ? "shadow-2xl cursor-grabbing" : "cursor-grab shadow-lg hover:shadow-2xl"
-        }`}
+      className={`absolute transition-shadow duration-300 rounded-md overflow-hidden ${isDragging ? "shadow-2xl cursor-grabbing" : "cursor-grab shadow-lg hover:shadow-2xl"}`}
       style={{
         left: `${position.x}px`,
         top: `${position.y}px`,

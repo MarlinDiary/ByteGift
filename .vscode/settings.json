@@ -1,0 +1,18 @@
+{
+    "css.validate": false,
+    "editor.quickSuggestions": {
+        "strings": true
+    },
+    "tailwindCSS.experimental.classRegex": [],
+    "tailwindCSS.includeLanguages": {
+        "typescript": "javascript",
+        "typescriptreact": "javascript"
+    },
+    "editor.inlayHints.enabled": "off",
+    "files.associations": {
+        "*.css": "tailwindcss"
+    },
+    "css.customData": [
+        ".vscode/css-data.json"
+    ]
+}
