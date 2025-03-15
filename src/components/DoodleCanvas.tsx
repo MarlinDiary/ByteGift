@@ -158,7 +158,7 @@ export const DoodleCanvas: React.FC<DoodleCanvasProps> = ({ onSave, onCancel }) 
               fill="none" 
               strokeLinecap="round" 
               strokeLinejoin="round"
-              vector-effect="non-scaling-stroke"
+              vectorEffect="non-scaling-stroke"
             />
           `,
           )
@@ -200,7 +200,7 @@ export const DoodleCanvas: React.FC<DoodleCanvasProps> = ({ onSave, onCancel }) 
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                vector-effect="non-scaling-stroke"
+                vectorEffect="non-scaling-stroke"
               />
             ))}
 
@@ -213,7 +213,7 @@ export const DoodleCanvas: React.FC<DoodleCanvasProps> = ({ onSave, onCancel }) 
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                vector-effect="non-scaling-stroke"
+                vectorEffect="non-scaling-stroke"
               />
             )}
           </svg>
