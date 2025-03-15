@@ -3,24 +3,57 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-}
+  --accent-color: #f87171;
+  --secondary-color: #4ade80;
 
-@theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-accent: var(--accent-color);
+  --color-secondary: var(--secondary-color);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --accent-color: #ef4444;
+    --secondary-color: #22c55e;
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-accent: var(--accent-color);
+    --color-secondary: var(--secondary-color);
   }
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* 添加手写字体类 */
+.font-caveat {
+  font-family: var(--font-caveat), cursive;
+}
+
