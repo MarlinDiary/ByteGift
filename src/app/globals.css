@@ -54,7 +54,18 @@ body {
   animation: fadeIn 0.5s ease-in-out;
 }
 
-/* 添加手写字体类 */
+/* Add handwritten font class */
 .font-caveat {
   font-family: var(--font-caveat), cursive;
 }
+
+/* Hide scrollbars but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
