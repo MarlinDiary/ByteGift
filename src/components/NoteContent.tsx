@@ -6,13 +6,42 @@ import { useState, useRef, useEffect } from "react"
 interface NoteContentProps {
   color: string
   isDragging?: boolean
+  width?: string  // 可选的宽度参数
+  height?: string // 可选的高度参数
 }
 
-export const NoteContent: React.FC<NoteContentProps> = ({ color, isDragging = false }) => {
+export const NoteContent: React.FC<NoteContentProps> = ({ color, isDragging = false, width, height }) => {
   const [content, setContent] = useState("")
   const [isEditing, setIsEditing] = useState(false)
+  const [randomSize, setRandomSize] = useState({
+    width: "",
+    height: ""
+  })
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const noteRef = useRef<HTMLDivElement>(null)
+
+  // 组件挂载时生成随机尺寸
+  useEffect(() => {
+    // 如果外部提供了尺寸，则使用外部尺寸
+    if (width && height) {
+      setRandomSize({ width, height })
+      return
+    }
+
+    // 否则生成随机尺寸
+    // 宽度在192px到256px之间随机（从w-48到w-64）
+    // 高度在192px到256px之间随机（从h-48到h-64）
+    const widthOptions = ['w-48', 'w-52', 'w-56', 'w-60', 'w-64'];
+    const heightOptions = ['h-48', 'h-52', 'h-56', 'h-60', 'h-64'];
+
+    const randomWidth = widthOptions[Math.floor(Math.random() * widthOptions.length)];
+    const randomHeight = heightOptions[Math.floor(Math.random() * heightOptions.length)];
+
+    setRandomSize({
+      width: randomWidth,
+      height: randomHeight
+    });
+  }, [width, height]);
 
   // Get color styles based on the color prop
   const getColorStyles = () => {
@@ -128,7 +157,7 @@ export const NoteContent: React.FC<NoteContentProps> = ({ color, isDragging = fa
         }`}
       onClick={handleNoteClick}
     >
-      <div className={`w-56 h-56 ${colorStyles.bg} p-3 border ${colorStyles.border} rounded-md relative`}>
+      <div className={`${randomSize.width} ${randomSize.height} ${colorStyles.bg} p-3 border ${colorStyles.border} rounded-md relative`}>
         {/* Note tape effect */}
         <div
           className={`absolute top-0 left-1/2 transform -translate-x-1/2 w-14 h-3 ${colorStyles.tape} rounded-b-sm`}
