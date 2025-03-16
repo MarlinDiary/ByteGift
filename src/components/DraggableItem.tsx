@@ -191,7 +191,7 @@ export const DraggableItem: React.FC<DraggableItemProps> = ({
   // Clone children and pass isDragging prop
   const childrenWithProps = React.Children.map(children, (child) => {
     if (React.isValidElement(child)) {
-      return React.cloneElement(child, { isDragging })
+      return React.cloneElement(child, { isDragging: isDragging } as { isDragging: boolean })
     }
     return child
   })
