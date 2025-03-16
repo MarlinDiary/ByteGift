@@ -23,7 +23,12 @@ export const DoodleContent: React.FC<DoodleContentProps> = ({ svgData, isDraggin
         const svgElement = svgDoc.querySelector("svg")
 
         if (svgElement) {
-          // 加粗所有路径
+          // 设置SVG渲染品质
+          svgElement.setAttribute("shape-rendering", "geometricPrecision")
+          svgElement.setAttribute("text-rendering", "optimizeLegibility")
+          svgElement.setAttribute("image-rendering", "optimizeQuality")
+
+          // 加粗所有路径并提高平滑度
           const paths = svgElement.querySelectorAll("path")
           paths.forEach(path => {
             // 获取当前宽度并加粗
@@ -32,6 +37,15 @@ export const DoodleContent: React.FC<DoodleContentProps> = ({ svgData, isDraggin
             currentWidth = currentWidth * 1.1
             path.setAttribute("stroke-width", currentWidth.toString())
             path.setAttribute("vector-effect", "non-scaling-stroke")
+
+            // 添加平滑属性
+            path.setAttribute("stroke-linejoin", "round")
+            path.setAttribute("stroke-linecap", "round")
+
+            // 如果路径没有设置fill，设置为none以避免填充影响
+            if (!path.hasAttribute("fill")) {
+              path.setAttribute("fill", "none")
+            }
           })
 
           // 确保SVG属性正确
@@ -57,9 +71,14 @@ export const DoodleContent: React.FC<DoodleContentProps> = ({ svgData, isDraggin
         svg.style.maxWidth = "100%"
         svg.style.maxHeight = "100%"
         svg.style.overflow = "visible"
+
+        // 添加CSS滤镜以提高平滑度
+        if (!isDragging) {  // 拖动时不应用高级效果以保持性能
+          svg.style.filter = "blur(0.1px)"  // 非常轻微的模糊以平滑边缘
+        }
       }
     }
-  }, [svgData])
+  }, [svgData, isDragging])
 
   return <div ref={containerRef} className="min-w-[100px] min-h-[100px] p-2" />
 }
