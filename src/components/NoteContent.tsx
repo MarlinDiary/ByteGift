@@ -167,7 +167,7 @@ export const NoteContent: React.FC<NoteContentProps> = ({ color, isDragging = fa
           /* Editable textarea when in edit mode */
           <textarea
             ref={textareaRef}
-            className={`w-full h-full bg-transparent resize-none outline-none pt-4 font-caveat text-lg ${colorStyles.text} placeholder:${colorStyles.text} placeholder:opacity-60 scrollbar-hide`}
+            className={`w-full h-full bg-transparent resize-none outline-none pt-4 font-caveat text-2xl ${colorStyles.text} placeholder:${colorStyles.text} placeholder:opacity-60 scrollbar-hide`}
             placeholder="Write something..."
             value={content}
             onChange={(e) => setContent(e.target.value)}
@@ -181,7 +181,7 @@ export const NoteContent: React.FC<NoteContentProps> = ({ color, isDragging = fa
         ) : (
           /* Read-only display when not in edit mode */
           <div
-            className={`w-full h-full pt-4 font-caveat text-lg ${colorStyles.text} overflow-auto scrollbar-hide whitespace-pre-wrap`}
+            className={`w-full h-full pt-4 font-caveat text-2xl ${colorStyles.text} overflow-auto scrollbar-hide whitespace-pre-wrap`}
             style={{
               overflowWrap: "break-word",
               fontFamily: "Caveat, cursive"
