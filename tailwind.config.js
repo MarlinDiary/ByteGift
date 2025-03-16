@@ -11,6 +11,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
+        sans: ["var(--font-inter)"],
         caveat: ["var(--font-caveat)", "cursive"],
       },
       colors: {

@@ -146,7 +146,7 @@ export const NoteContent: React.FC<NoteContentProps> = ({ color, isDragging = fa
             onMouseDown={handleTextareaMouseDown}
             style={{
               overflow: "auto",
-              fontFamily: "var(--font-caveat), cursive",
+              fontFamily: "Caveat, cursive"
             }}
           />
         ) : (
@@ -155,7 +155,7 @@ export const NoteContent: React.FC<NoteContentProps> = ({ color, isDragging = fa
             className={`w-full h-full pt-4 font-caveat text-lg ${colorStyles.text} overflow-auto scrollbar-hide whitespace-pre-wrap`}
             style={{
               overflowWrap: "break-word",
-              fontFamily: "var(--font-caveat), cursive",
+              fontFamily: "Caveat, cursive"
             }}
           >
             {content || <span className="opacity-60">Write something...</span>}

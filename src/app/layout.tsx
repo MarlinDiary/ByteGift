@@ -13,6 +13,7 @@ const caveat = Caveat({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-caveat",
+  weight: ["400", "500", "600", "700"],
 })
 
 export const metadata: Metadata = {
