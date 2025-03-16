@@ -124,9 +124,8 @@ export const NoteContent: React.FC<NoteContentProps> = ({ color, isDragging = fa
   return (
     <div
       ref={noteRef}
-      className={`transition-shadow duration-300 rounded-md overflow-hidden ${
-        isDragging ? "shadow-2xl" : "shadow-lg hover:shadow-2xl"
-      }`}
+      className={`transition-shadow duration-300 rounded-md overflow-hidden ${isDragging ? "shadow-2xl" : "shadow-lg hover:shadow-2xl"
+        }`}
       onClick={handleNoteClick}
     >
       <div className={`w-56 h-56 ${colorStyles.bg} p-3 border ${colorStyles.border} rounded-md relative`}>
@@ -147,13 +146,17 @@ export const NoteContent: React.FC<NoteContentProps> = ({ color, isDragging = fa
             onMouseDown={handleTextareaMouseDown}
             style={{
               overflow: "auto",
+              fontFamily: "var(--font-caveat), cursive",
             }}
           />
         ) : (
           /* Read-only display when not in edit mode */
           <div
             className={`w-full h-full pt-4 font-caveat text-lg ${colorStyles.text} overflow-auto scrollbar-hide whitespace-pre-wrap`}
-            style={{ overflowWrap: "break-word" }}
+            style={{
+              overflowWrap: "break-word",
+              fontFamily: "var(--font-caveat), cursive",
+            }}
           >
             {content || <span className="opacity-60">Write something...</span>}
           </div>

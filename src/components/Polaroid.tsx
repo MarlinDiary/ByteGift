@@ -32,7 +32,7 @@ export const Polaroid: React.FC<PolaroidProps> = ({ onClick }) => {
 
         {/* Bottom area with subtle gradient */}
         <div className="left-0 right-0 h-10 flex items-center justify-center bg-gradient-to-b from-transparent to-stone-50">
-          <span className="text-sm text-gray-400 select-none">Add Photo</span>
+          <span className="text-sm text-gray-500 select-none font-['Caveat',_cursive] transform rotate-[-1deg]">Add Photo</span>
         </div>
       </div>
       <button

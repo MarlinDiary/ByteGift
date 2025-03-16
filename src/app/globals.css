@@ -7,6 +7,7 @@
   --foreground: #171717;
   --accent-color: #f87171;
   --secondary-color: #4ade80;
+  --font-caveat: 'Caveat', cursive;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -56,7 +57,7 @@ body {
 
 /* Add handwritten font class */
 .font-caveat {
-  font-family: var(--font-caveat), cursive;
+  font-family: var(--font-caveat), cursive !important;
 }
 
 /* Hide scrollbars but keep functionality */
