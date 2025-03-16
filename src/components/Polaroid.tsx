@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+import { Baby } from "lucide-react"
 
 interface PolaroidProps {
   onClick: () => void
@@ -15,17 +16,7 @@ export const Polaroid: React.FC<PolaroidProps> = ({ onClick }) => {
 
         {/* Photo area with inner shadow */}
         <div className="bg-stone-100 aspect-square overflow-hidden flex items-center justify-center relative shadow-[inset_0_1px_3px_rgba(0,0,0,0.1)]">
-          <svg viewBox="0 0 24 24" fill="none" className="w-16 h-16 text-stone-300">
-            <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="2" />
-            <circle cx="9" cy="10" r="1.5" fill="currentColor" />
-            <circle cx="15" cy="10" r="1.5" fill="currentColor" />
-            <path
-              d="M8.5 14.5C8.5 14.5 10 16.5 12 16.5C14 16.5 15.5 14.5 15.5 14.5"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
+          <Baby className="w-16 h-16 text-stone-300" strokeWidth={1.5} />
           {/* Photo area inner shadow overlay */}
           <div className="absolute inset-0 shadow-[inset_0_0_4px_rgba(0,0,0,0.1)]" />
         </div>
