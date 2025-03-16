@@ -67,9 +67,8 @@ export const SpotifyContent: React.FC<SpotifyContentProps> = ({
 
   return (
     <div
-      className={`transition-shadow duration-300 rounded-lg overflow-hidden ${
-        isDragging ? "shadow-2xl" : "shadow-lg hover:shadow-2xl"
-      }`}
+      className={`transition-shadow duration-300 rounded-lg ${isDragging ? "shadow-2xl" : "shadow-lg hover:shadow-2xl"
+        }`}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => {
         setIsHovering(false)
@@ -79,9 +78,8 @@ export const SpotifyContent: React.FC<SpotifyContentProps> = ({
       <div className="bg-white rounded-lg border border-gray-200 overflow-hidden w-[300px]">
         {/* URL input - only visible on hover */}
         <div
-          className={`bg-gray-100 border-b border-gray-200 p-2 transition-all duration-300 ${
-            isHovering ? "opacity-100 h-10" : "opacity-0 h-0 p-0 overflow-hidden"
-          }`}
+          className={`bg-gray-100 transition-all duration-300 ${isHovering ? "opacity-100 h-10 border-b border-gray-200 p-2" : "opacity-0 h-0 p-0 overflow-hidden"
+            }`}
         >
           {/* URL input field */}
           <form onSubmit={handleSubmit} className="w-full relative">
@@ -112,22 +110,24 @@ export const SpotifyContent: React.FC<SpotifyContentProps> = ({
         {/* Content area */}
         <div className="p-2">
           {isLoading ? (
-            <div className="h-[152px] flex items-center justify-center bg-white">
+            <div className="h-[152px] flex items-center justify-center bg-white rounded-b-lg">
               <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
             </div>
           ) : error ? (
-            <div className="h-[152px] flex items-center justify-center bg-white text-red-500">{error}</div>
+            <div className="h-[152px] flex items-center justify-center bg-white rounded-b-lg text-red-500">{error}</div>
           ) : (
             iframeSrc && (
-              <iframe
-                src={iframeSrc}
-                width="100%"
-                height="152"
-                frameBorder="0"
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                loading="lazy"
-                className="transform-gpu"
-              />
+              <div className="overflow-hidden rounded-b-lg">
+                <iframe
+                  src={iframeSrc}
+                  width="100%"
+                  height="152"
+                  frameBorder="0"
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy"
+                  className="transform-gpu"
+                />
+              </div>
             )
           )}
         </div>
