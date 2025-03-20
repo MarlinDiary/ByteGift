@@ -12,6 +12,8 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({ isOpen, onClose, items
     const [shareUrl, setShareUrl] = useState('');
     const [isCopied, setIsCopied] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [customPath, setCustomPath] = useState('');
+    const [error, setError] = useState('');
 
     const uploadFile = async (file: File, type: 'image' | 'audio') => {
         const formData = new FormData();
@@ -33,6 +35,19 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({ isOpen, onClose, items
     const handleShare = async () => {
         try {
             setIsLoading(true);
+            setError('');
+
+            // 验证自定义路径
+            if (customPath) {
+                if (!/^[a-zA-Z0-9-_]+$/.test(customPath)) {
+                    setError('自定义链接只能包含字母、数字、下划线和连字符');
+                    return;
+                }
+                if (customPath.length < 3) {
+                    setError('自定义链接至少需要3个字符');
+                    return;
+                }
+            }
 
             // 处理所有需要上传的文件
             const processedItems = await Promise.all(
@@ -92,11 +107,15 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({ isOpen, onClose, items
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ items: processedItems }),
+                body: JSON.stringify({
+                    items: processedItems,
+                    customPath: customPath || undefined
+                }),
             });
 
             if (!response.ok) {
-                throw new Error('分享失败');
+                const data = await response.json();
+                throw new Error(data.message || '分享失败');
             }
 
             const data = await response.json();
@@ -104,7 +123,7 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({ isOpen, onClose, items
             setShareUrl(url);
         } catch (error) {
             console.error('分享失败:', error);
-            alert('分享失败，请重试');
+            setError(error instanceof Error ? error.message : '分享失败，请重试');
         } finally {
             setIsLoading(false);
         }
@@ -132,20 +151,46 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({ isOpen, onClose, items
                     </Dialog.Title>
 
                     {!shareUrl ? (
-                        <button
-                            onClick={handleShare}
-                            disabled={isLoading}
-                            className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            {isLoading ? (
-                                '生成分享链接...'
-                            ) : (
-                                <>
-                                    <Share2 className="w-4 h-4" />
-                                    生成分享链接
-                                </>
+                        <div className="space-y-4">
+                            <div>
+                                <label htmlFor="customPath" className="block text-sm font-medium text-gray-700 mb-1">
+                                    自定义链接（可选）
+                                </label>
+                                <div className="flex items-center gap-2">
+                                    <span className="text-sm text-gray-500">bytegift.com/share/</span>
+                                    <input
+                                        type="text"
+                                        id="customPath"
+                                        value={customPath}
+                                        onChange={(e) => setCustomPath(e.target.value)}
+                                        placeholder="输入自定义链接"
+                                        className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+                                <p className="mt-1 text-xs text-gray-500">
+                                    只能包含字母、数字、下划线和连字符，至少3个字符
+                                </p>
+                            </div>
+
+                            {error && (
+                                <p className="text-sm text-red-500">{error}</p>
                             )}
-                        </button>
+
+                            <button
+                                onClick={handleShare}
+                                disabled={isLoading}
+                                className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {isLoading ? (
+                                    '生成分享链接...'
+                                ) : (
+                                    <>
+                                        <Share2 className="w-4 h-4" />
+                                        生成分享链接
+                                    </>
+                                )}
+                            </button>
+                        </div>
                     ) : (
                         <div className="space-y-4">
                             <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">

@@ -5,7 +5,13 @@ const shareSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        index: true
+        index: true,
+        validate: {
+            validator: function (v: string) {
+                return /^[a-zA-Z0-9-_]+$/.test(v) && v.length >= 3;
+            },
+            message: '分享ID只能包含字母、数字、下划线和连字符，且至少需要3个字符'
+        }
     },
     items: {
         type: [{

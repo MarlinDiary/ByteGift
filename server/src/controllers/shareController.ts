@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const createShare = async (req: Request, res: Response) => {
     try {
-        const { items } = req.body;
+        const { items, customPath } = req.body;
         console.log('Creating share with items:', JSON.stringify(items, null, 2));
 
         if (!items || !Array.isArray(items) || items.length === 0) {
@@ -12,7 +12,20 @@ export const createShare = async (req: Request, res: Response) => {
             return res.status(400).json({ message: '无效的项目数据' });
         }
 
-        const shareId = uuidv4();
+        // 验证自定义路径
+        if (customPath) {
+            if (!/^[a-zA-Z0-9-_]+$/.test(customPath) || customPath.length < 3) {
+                return res.status(400).json({ message: '自定义链接只能包含字母、数字、下划线和连字符，且至少需要3个字符' });
+            }
+
+            // 检查自定义路径是否已存在
+            const existingShare = await Share.findOne({ shareId: customPath });
+            if (existingShare) {
+                return res.status(400).json({ message: '该自定义链接已被使用' });
+            }
+        }
+
+        const shareId = customPath || uuidv4();
         const expiresAt = new Date();
         expiresAt.setDate(expiresAt.getDate() + 7); // 7天后过期
 
