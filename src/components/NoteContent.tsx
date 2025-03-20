@@ -8,9 +8,10 @@ interface NoteContentProps {
   isDragging?: boolean;
   width?: string;  // 可选的宽度参数
   height?: string; // 可选的高度参数
+  onContentChange?: (content: string) => void;
 }
 
-export const NoteContent: React.FC<NoteContentProps> = ({ color = 'yellow', content = '', isDragging = false, width, height }) => {
+export const NoteContent: React.FC<NoteContentProps> = ({ color = 'yellow', content = '', isDragging = false, width, height, onContentChange }) => {
   const [noteContent, setNoteContent] = useState(content);
   const [isEditing, setIsEditing] = useState(false);
   const [randomSize, setRandomSize] = useState({
@@ -154,6 +155,15 @@ export const NoteContent: React.FC<NoteContentProps> = ({ color = 'yellow', cont
     }
   }, [isDragging]);
 
+  // Handle textarea change
+  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newContent = e.target.value;
+    setNoteContent(newContent);
+    if (onContentChange) {
+      onContentChange(newContent);
+    }
+  };
+
   return (
     <div
       ref={noteRef}
@@ -174,7 +184,7 @@ export const NoteContent: React.FC<NoteContentProps> = ({ color = 'yellow', cont
             className={`w-full h-full bg-transparent resize-none outline-none pt-4 font-caveat text-2xl ${colorStyles.text} placeholder:${colorStyles.text} placeholder:opacity-60 scrollbar-hide`}
             placeholder="Write something..."
             value={noteContent}
-            onChange={(e) => setNoteContent(e.target.value)}
+            onChange={handleTextareaChange}
             onClick={handleTextareaClick}
             onMouseDown={handleTextareaMouseDown}
             style={{

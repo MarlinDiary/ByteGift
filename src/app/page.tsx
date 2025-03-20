@@ -27,6 +27,7 @@ interface Item {
     imageUrl?: string
     dateTaken?: string
     color?: string
+    content?: string
     audioUrl?: string
     spotifyUrl?: string
     svgData?: string
@@ -348,6 +349,16 @@ export default function Home() {
     setIsDoodling(false)
   }
 
+  const handleNoteContentChange = (id: string, content: string) => {
+    setItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === id
+          ? { ...item, data: { ...item.data, content } }
+          : item
+      )
+    );
+  };
+
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
       <GridBackground />
@@ -385,7 +396,11 @@ export default function Home() {
             {item.type === "photo" ? (
               <PolaroidContent imageUrl={item.data.imageUrl || ""} dateTaken={item.data.dateTaken} />
             ) : item.type === "note" ? (
-              <NoteContent color={item.data.color || "yellow"} />
+              <NoteContent
+                color={item.data.color || "yellow"}
+                content={item.data.content || ""}
+                onContentChange={(content) => handleNoteContentChange(item.id, content)}
+              />
             ) : item.type === "spotify" ? (
               <SpotifyContent initialUrl={item.data.spotifyUrl} />
             ) : item.type === "doodle" ? (
