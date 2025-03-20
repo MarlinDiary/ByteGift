@@ -14,6 +14,8 @@ import SpotifyContent from "../components/SpotifyContent"
 import DoodleContent from "../components/DoodleContent"
 import DoodleCanvas from "../components/DoodleCanvas"
 import audioRecorder from "../services/audioRecorder"
+import { ShareDialog } from '@/components/ShareDialog'
+import { Share2 } from 'lucide-react'
 
 interface Item {
   id: string
@@ -40,6 +42,7 @@ export default function Home() {
   const canvasRef = useRef<HTMLDivElement>(null)
   const recordingTimerId = useRef<NodeJS.Timeout | null>(null)
   const maxRecordingTime = audioRecorder.getMaxRecordingTime()
+  const [isShareDialogOpen, setIsShareDialogOpen] = useState(false)
 
   // 处理录音计时器
   useEffect(() => {
@@ -348,6 +351,21 @@ export default function Home() {
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
       <GridBackground />
+
+      {/* 分享按钮 */}
+      <button
+        onClick={() => setIsShareDialogOpen(true)}
+        className="fixed top-4 right-4 z-50 p-2 bg-white/80 backdrop-blur-sm rounded-full shadow-lg hover:bg-white transition-colors"
+      >
+        <Share2 className="w-5 h-5 text-gray-600" />
+      </button>
+
+      {/* 分享对话框 */}
+      <ShareDialog
+        isOpen={isShareDialogOpen}
+        onClose={() => setIsShareDialogOpen(false)}
+        items={items}
+      />
 
       {/* 隐藏的文件输入 */}
       <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" />

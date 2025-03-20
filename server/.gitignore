@@ -29,4 +29,7 @@ coverage/
 
 # 临时文件
 tmp/
-temp/ 
+temp/
+
+# 上传文件
+uploads/ 

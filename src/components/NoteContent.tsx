@@ -1,31 +1,35 @@
 "use client"
 
-import type React from "react"
-import { useState, useRef, useEffect } from "react"
+import React, { useState, useRef, useEffect } from 'react';
 
 interface NoteContentProps {
-  color: string
-  isDragging?: boolean
-  width?: string  // 可选的宽度参数
-  height?: string // 可选的高度参数
+  color?: string;
+  content?: string;
+  isDragging?: boolean;
+  width?: string;  // 可选的宽度参数
+  height?: string; // 可选的高度参数
 }
 
-export const NoteContent: React.FC<NoteContentProps> = ({ color, isDragging = false, width, height }) => {
-  const [content, setContent] = useState("")
-  const [isEditing, setIsEditing] = useState(false)
+export const NoteContent: React.FC<NoteContentProps> = ({ color = 'yellow', content = '', isDragging = false, width, height }) => {
+  const [noteContent, setNoteContent] = useState(content);
+  const [isEditing, setIsEditing] = useState(false);
   const [randomSize, setRandomSize] = useState({
     width: "",
     height: ""
-  })
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const noteRef = useRef<HTMLDivElement>(null)
+  });
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const noteRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setNoteContent(content);
+  }, [content]);
 
   // 组件挂载时生成随机尺寸
   useEffect(() => {
     // 如果外部提供了尺寸，则使用外部尺寸
     if (width && height) {
-      setRandomSize({ width, height })
-      return
+      setRandomSize({ width, height });
+      return;
     }
 
     // 否则生成随机尺寸
@@ -97,58 +101,58 @@ export const NoteContent: React.FC<NoteContentProps> = ({ color, isDragging = fa
   const handleNoteClick = (e: React.MouseEvent) => {
     // If we're already dragging, don't enter edit mode
     if (isDragging) {
-      e.stopPropagation()
-      return
+      e.stopPropagation();
+      return;
     }
 
     // If we're already editing, don't do anything
-    if (isEditing) return
+    if (isEditing) return;
 
     // Enter edit mode
-    setIsEditing(true)
-    e.stopPropagation()
+    setIsEditing(true);
+    e.stopPropagation();
 
     // Focus the textarea after a short delay to ensure it's ready
     setTimeout(() => {
       if (textareaRef.current) {
-        textareaRef.current.focus()
+        textareaRef.current.focus();
       }
-    }, 10)
+    }, 10);
   }
 
   // Handle textarea click to prevent event propagation
   const handleTextareaClick = (e: React.MouseEvent) => {
-    e.stopPropagation()
+    e.stopPropagation();
   }
 
   // Handle mouse down on textarea to prevent dragging
   const handleTextareaMouseDown = (e: React.MouseEvent) => {
-    e.stopPropagation()
+    e.stopPropagation();
   }
 
   // Add click outside listener to exit edit mode
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (noteRef.current && !noteRef.current.contains(e.target as Node) && isEditing) {
-        setIsEditing(false)
+        setIsEditing(false);
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside)
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
+      document.removeEventListener("mousedown", handleClickOutside);
     }
-  }, [isEditing])
+  }, [isEditing]);
 
   // Track dragging state changes
   useEffect(() => {
     if (isDragging) {
       // If we start dragging while editing, exit edit mode
       if (isEditing) {
-        setIsEditing(false)
+        setIsEditing(false);
       }
     }
-  }, [isDragging])
+  }, [isDragging]);
 
   return (
     <div
@@ -169,8 +173,8 @@ export const NoteContent: React.FC<NoteContentProps> = ({ color, isDragging = fa
             ref={textareaRef}
             className={`w-full h-full bg-transparent resize-none outline-none pt-4 font-caveat text-2xl ${colorStyles.text} placeholder:${colorStyles.text} placeholder:opacity-60 scrollbar-hide`}
             placeholder="Write something..."
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+            value={noteContent}
+            onChange={(e) => setNoteContent(e.target.value)}
             onClick={handleTextareaClick}
             onMouseDown={handleTextareaMouseDown}
             style={{
@@ -187,12 +191,12 @@ export const NoteContent: React.FC<NoteContentProps> = ({ color, isDragging = fa
               fontFamily: "Caveat, cursive"
             }}
           >
-            {content || <span className="opacity-60">Write something...</span>}
+            {noteContent || <span className="opacity-60">Write something...</span>}
           </div>
         )}
       </div>
     </div>
-  )
+  );
 }
 
 export default NoteContent
