@@ -102,7 +102,7 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({ isOpen, onClose, items
             );
 
             // 创建分享
-            const response = await fetch('http://localhost:5001/api/share', {
+            const response = await fetch('http://localhost:5001/api/from', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -119,7 +119,7 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({ isOpen, onClose, items
             }
 
             const data = await response.json();
-            const url = `${window.location.origin}/share/${data.shareId}`;
+            const url = `${window.location.origin}/from/${data.shareId}`;
             setShareUrl(url);
         } catch (error) {
             console.error('分享失败:', error);
@@ -157,7 +157,7 @@ export const ShareDialog: React.FC<ShareDialogProps> = ({ isOpen, onClose, items
                                     自定义链接（可选）
                                 </label>
                                 <div className="flex items-center gap-2">
-                                    <span className="text-sm text-gray-500">bytegift.com/share/</span>
+                                    <span className="text-sm text-gray-500">unwrap.love/from/</span>
                                     <input
                                         type="text"
                                         id="customPath"

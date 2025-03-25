@@ -17,7 +17,7 @@ const caveat = Caveat({
 })
 
 export const metadata: Metadata = {
-  title: "Byte Gift",
+  title: "Unwrap Love",
 }
 
 export default function RootLayout({

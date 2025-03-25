@@ -33,7 +33,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // 数据库连接
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/bytegift')
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/unwraplove')
     .then(() => {
         console.log('MongoDB connected successfully');
     })
@@ -43,14 +43,14 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/bytegift'
 
 // 路由
 app.get('/', (req, res) => {
-    res.json({ message: 'Welcome to ByteGift API' });
+    res.json({ message: 'Welcome to Unwrap Love API' });
 });
 
 // 文件上传路由
 app.use('/api/upload', uploadRoutes);
 
 // 分享路由
-app.use('/api/share', shareRoutes);
+app.use('/api/from', shareRoutes);
 
 // 错误处理中间件
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {

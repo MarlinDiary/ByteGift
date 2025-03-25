@@ -27,7 +27,7 @@ interface Item {
     };
 }
 
-export default function SharePage({ params }: { params: Promise<{ shareId: string }> }) {
+export default function FromPage({ params }: { params: Promise<{ shareId: string }> }) {
     const { shareId } = use(params);
     const [items, setItems] = useState<Item[]>([]);
     const [error, setError] = useState<string | null>(null);
