@@ -12,7 +12,6 @@ import NoteContent from "../components/NoteContent"
 import AudioContent from "../components/AudioContent"
 import SpotifyContent from "../components/SpotifyContent"
 import DoodleContent from "../components/DoodleContent"
-import DoodleCanvas from "../components/DoodleCanvas"
 import audioRecorder from "../services/audioRecorder"
 import { ShareDialog } from '@/components/ShareDialog'
 import { Share2 } from 'lucide-react'
