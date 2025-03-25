@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react"
 import { Polaroid } from "./Polaroid"
 import { MicrophoneIcon } from "./MicrophoneIcon"
-import { SpotifyIcon } from "./SpotifyIcon"
+import { MediaIcon } from "./MediaIcon"
 import { PencilIcon } from "./PencilIcon"
 import { DoodleCanvas } from "./DoodleCanvas"
 import { motion, AnimatePresence } from "framer-motion"
@@ -24,7 +24,7 @@ interface ToolbarProps {
   onAddPhoto: () => void
   onAddNote: (color: string) => void
   onRecordVoice: () => void
-  onAddSpotify: (url: string) => void
+  onAddMedia: (url: string) => void
   onAddDoodle: () => void
   onSaveDoodle: (svgData: string) => void
   isRecording: boolean
@@ -35,7 +35,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   onAddPhoto,
   onAddNote,
   onRecordVoice,
-  onAddSpotify,
+  onAddMedia,
   onAddDoodle,
   onSaveDoodle,
   isRecording,
@@ -270,7 +270,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
               <MicrophoneIcon isRecording={isRecording} onClick={onRecordVoice} />
             </motion.div>
 
-            {/* Spotify CD图标 */}
+            {/* 媒体CD图标 */}
             <motion.div
               custom={3}
               variants={toolButtonVariants}
@@ -278,7 +278,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
               animate="visible"
               exit="exit"
             >
-              <SpotifyIcon onAddSpotify={onAddSpotify} />
+              <MediaIcon onAddMedia={onAddMedia} />
             </motion.div>
 
             {/* Pencil Icon */}

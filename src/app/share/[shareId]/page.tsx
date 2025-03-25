@@ -6,7 +6,7 @@ import { GridBackground } from '@/components/GridBackground';
 import { DraggableItem } from '@/components/DraggableItem';
 import { PolaroidContent } from '@/components/PolaroidContent';
 import { NoteContent } from '@/components/NoteContent';
-import { SpotifyContent } from '@/components/SpotifyContent';
+import MediaContent from '@/components/MediaContent';
 import { DoodleContent } from '@/components/DoodleContent';
 import { AudioContent } from '@/components/AudioContent';
 
@@ -15,7 +15,7 @@ interface Item {
     position: { x: number; y: number };
     zIndex: number;
     rotation: number;
-    type: 'photo' | 'note' | 'spotify' | 'doodle' | 'audio';
+    type: 'photo' | 'note' | 'media' | 'doodle' | 'audio';
     data: {
         imageUrl?: string;
         dateTaken?: string;
@@ -134,8 +134,8 @@ export default function SharePage({ params }: { params: Promise<{ shareId: strin
                                 content={item.data.content || ''}
                                 onBringToFront={() => handleDragStart(item.id)}
                             />
-                        ) : item.type === 'spotify' ? (
-                            <SpotifyContent
+                        ) : item.type === 'media' ? (
+                            <MediaContent
                                 initialUrl={item.data.spotifyUrl}
                             />
                         ) : item.type === 'doodle' ? (

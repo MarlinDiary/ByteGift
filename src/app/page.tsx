@@ -10,7 +10,7 @@ import DraggableItem from "../components/DraggableItem"
 import PolaroidContent from "../components/PolaroidContent"
 import NoteContent from "../components/NoteContent"
 import AudioContent from "../components/AudioContent"
-import SpotifyContent from "../components/SpotifyContent"
+import MediaContent from "../components/MediaContent"
 import DoodleContent from "../components/DoodleContent"
 import audioRecorder from "../services/audioRecorder"
 import { ShareDialog } from '@/components/ShareDialog'
@@ -21,7 +21,7 @@ interface Item {
   position: { x: number; y: number }
   zIndex: number
   rotation: number
-  type: "photo" | "note" | "audio" | "spotify" | "doodle"
+  type: "photo" | "note" | "audio" | "media" | "doodle"
   data: {
     imageUrl?: string
     dateTaken?: string
@@ -264,7 +264,7 @@ export default function Home() {
     setItems((prevItems) => [...prevItems, newItem])
   }
 
-  const handleAddSpotify = (url: string) => {
+  const handleAddMedia = (url: string) => {
     // 获取画布尺寸以确定随机位置范围
     const canvasRect = canvasRef.current?.getBoundingClientRect()
     const maxX = canvasRect ? canvasRect.width - 320 : window.innerWidth - 320
@@ -286,7 +286,7 @@ export default function Home() {
       position: { x: randomX, y: randomY },
       zIndex: newZIndex,
       rotation,
-      type: "spotify",
+      type: "media",
       data: {
         spotifyUrl: url,
       },
@@ -401,8 +401,8 @@ export default function Home() {
                 onContentChange={(content) => handleNoteContentChange(item.id, content)}
                 onBringToFront={() => handleDragStart(item.id)}
               />
-            ) : item.type === "spotify" ? (
-              <SpotifyContent initialUrl={item.data.spotifyUrl} />
+            ) : item.type === "media" ? (
+              <MediaContent initialUrl={item.data.spotifyUrl} />
             ) : item.type === "doodle" ? (
               <DoodleContent svgData={item.data.svgData || ""} />
             ) : (
@@ -420,7 +420,7 @@ export default function Home() {
           onAddPhoto={handleAddPhoto}
           onAddNote={handleAddNote}
           onRecordVoice={handleRecordVoice}
-          onAddSpotify={handleAddSpotify}
+          onAddMedia={handleAddMedia}
           onAddDoodle={handleAddDoodle}
           onSaveDoodle={handleSaveDoodle}
           isRecording={isRecording}
