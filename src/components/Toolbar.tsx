@@ -141,23 +141,25 @@ export const Toolbar: React.FC<ToolbarProps> = ({
     normal: {
       y: 0,
       opacity: 1,
-      height: "8rem", // 32px * 4 = 128px 约等于 8rem
+      height: "8rem",
       transition: {
         type: "spring",
-        stiffness: 120,
-        damping: 18,
-        delay: 0.05
+        stiffness: 200,
+        damping: 25,
+        duration: 0.2,
+        delay: 0
       }
     },
     expanded: {
       y: 0,
       opacity: 1,
-      height: "70vh", // 扩展到视口高度的70%
+      height: "33vh",
       transition: {
         type: "spring",
-        stiffness: 80,
-        damping: 20,
-        delay: 0.1
+        stiffness: 200,
+        damping: 25,
+        duration: 0.2,
+        delay: 0
       }
     }
   }
@@ -170,16 +172,17 @@ export const Toolbar: React.FC<ToolbarProps> = ({
       opacity: 1,
       transition: {
         type: "spring",
-        stiffness: 120,
-        damping: 14,
-        delay: 0.15 + custom * 0.06,
+        stiffness: 200,
+        damping: 25,
+        duration: 0.2,
+        delay: custom * 0.03,
       }
     }),
     exit: {
       y: 50,
       opacity: 0,
       transition: {
-        duration: 0.2
+        duration: 0.15
       }
     }
   }
@@ -192,16 +195,17 @@ export const Toolbar: React.FC<ToolbarProps> = ({
       opacity: 1,
       transition: {
         type: "spring",
-        stiffness: 120,
-        damping: 14,
-        delay: 0.21,
+        stiffness: 200,
+        damping: 25,
+        duration: 0.2,
+        delay: 0.09,
       }
     },
     exit: {
       y: 50,
       opacity: 0,
       transition: {
-        duration: 0.2
+        duration: 0.15
       }
     }
   }
@@ -567,7 +571,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
             className="absolute bottom-0 left-0 right-0 w-full px-8 h-32 flex justify-between items-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 0.2 } }}
+            exit={{ opacity: 0, transition: { duration: 0.15 } }}
           >
             {/* 拍立得组件 */}
             <motion.div
