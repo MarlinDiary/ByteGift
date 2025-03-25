@@ -132,6 +132,7 @@ export default function SharePage({ params }: { params: Promise<{ shareId: strin
                             <NoteContent
                                 color={item.data.color || 'yellow'}
                                 content={item.data.content || ''}
+                                onBringToFront={() => handleDragStart(item.id)}
                             />
                         ) : item.type === 'spotify' ? (
                             <SpotifyContent

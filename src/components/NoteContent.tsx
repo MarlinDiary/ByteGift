@@ -9,9 +9,10 @@ interface NoteContentProps {
   width?: string;  // 可选的宽度参数
   height?: string; // 可选的高度参数
   onContentChange?: (content: string) => void;
+  onBringToFront?: () => void; // 新增回调函数，用于通知父元素需要提升到顶层
 }
 
-export const NoteContent: React.FC<NoteContentProps> = ({ color = 'yellow', content = '', isDragging = false, width, height, onContentChange }) => {
+export const NoteContent: React.FC<NoteContentProps> = ({ color = 'yellow', content = '', isDragging = false, width, height, onContentChange, onBringToFront }) => {
   const [noteContent, setNoteContent] = useState(content);
   const [isEditing, setIsEditing] = useState(false);
   const [randomSize, setRandomSize] = useState({
@@ -111,6 +112,28 @@ export const NoteContent: React.FC<NoteContentProps> = ({ color = 'yellow', cont
 
     // Enter edit mode
     setIsEditing(true);
+
+    // 触发父组件的点击事件，将便签提升到顶层
+    // 这样既能进入编辑模式，又能将便签提升到最高层级
+    if (onBringToFront) {
+      onBringToFront();
+    } else {
+      // 如果没有提供 onBringToFront 回调，手动触发一个点击事件到父元素
+      // 这个技巧可以在不修改父组件接口的情况下，触发 DraggableItem 的点击事件
+      const customEvent = new MouseEvent('click', {
+        bubbles: true,
+        cancelable: true,
+        view: window
+      });
+
+      // 获取父元素并分发事件
+      // 注意：我们仍然阻止当前事件，但创建一个新事件分发到父元素
+      const parent = noteRef.current?.parentElement;
+      if (parent) {
+        setTimeout(() => parent.dispatchEvent(customEvent), 0);
+      }
+    }
+
     e.stopPropagation();
 
     // Focus the textarea after a short delay to ensure it's ready

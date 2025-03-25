@@ -400,6 +400,7 @@ export default function Home() {
                 color={item.data.color || "yellow"}
                 content={item.data.content || ""}
                 onContentChange={(content) => handleNoteContentChange(item.id, content)}
+                onBringToFront={() => handleDragStart(item.id)}
               />
             ) : item.type === "spotify" ? (
               <SpotifyContent initialUrl={item.data.spotifyUrl} />
