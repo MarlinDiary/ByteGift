@@ -2,6 +2,7 @@
 
 import React from "react"
 import { useState, useRef, useEffect } from "react"
+import { motion, useMotionValue, useTransform, animate, PanInfo } from "framer-motion"
 
 interface DraggableItemProps {
   id: string
@@ -23,203 +24,83 @@ export const DraggableItem: React.FC<DraggableItemProps> = ({
   rotation = 0,
 }) => {
   const [isDragging, setIsDragging] = useState(false)
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
-  const itemRef = useRef<HTMLDivElement>(null)
-  const positionRef = useRef(initialPosition)
-  const dragStartPosRef = useRef({ x: 0, y: 0 })
+  const x = useMotionValue(initialPosition.x)
+  const y = useMotionValue(initialPosition.y)
   const hasDraggedRef = useRef(false)
 
-  // Handle mouse down to start dragging
-  const handleMouseDown = (e: React.MouseEvent) => {
-    // Skip if the target is a textarea or input
-    if (e.target instanceof HTMLTextAreaElement || e.target instanceof HTMLInputElement) {
-      return
-    }
-
-    if (itemRef.current) {
-      e.preventDefault()
-      const rect = itemRef.current.getBoundingClientRect()
-      setDragOffset({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-      })
-
-      // Record the starting position of the drag
-      dragStartPosRef.current = { x: e.clientX, y: e.clientY }
-      hasDraggedRef.current = false
-
-      setIsDragging(true)
-      onDragStart(id)
-    }
-  }
-
-  // Handle touch start for mobile devices
-  const handleTouchStart = (e: React.TouchEvent) => {
-    // Skip if the target is a textarea or input
-    if (e.target instanceof HTMLTextAreaElement || e.target instanceof HTMLInputElement) {
-      return
-    }
-
-    if (itemRef.current && e.touches[0]) {
-      const rect = itemRef.current.getBoundingClientRect()
-      setDragOffset({
-        x: e.touches[0].clientX - rect.left,
-        y: e.touches[0].clientY - rect.top,
-      })
-
-      // Record the starting position of the drag
-      dragStartPosRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
-      hasDraggedRef.current = false
-
-      setIsDragging(true)
-      onDragStart(id)
-    }
-  }
-
-  // Handle mouse move during dragging
-  const handleMouseMove = (e: MouseEvent) => {
-    if (isDragging) {
-      const newX = e.clientX - dragOffset.x
-      const newY = e.clientY - dragOffset.y
-
-      // Check if we've moved enough to consider this a drag
-      const dx = Math.abs(e.clientX - dragStartPosRef.current.x)
-      const dy = Math.abs(e.clientY - dragStartPosRef.current.y)
-      if (dx > 5 || dy > 5) {
-        hasDraggedRef.current = true
-      }
-
-      positionRef.current = { x: newX, y: newY }
-
-      // Use requestAnimationFrame for smooth animation
-      requestAnimationFrame(() => {
-        if (itemRef.current) {
-          itemRef.current.style.left = `${newX}px`
-          itemRef.current.style.top = `${newY}px`
-        }
-      })
-    }
-  }
-
-  // Handle touch move for mobile devices
-  const handleTouchMove = (e: TouchEvent) => {
-    if (isDragging && e.touches[0]) {
-      const newX = e.touches[0].clientX - dragOffset.x
-      const newY = e.touches[0].clientY - dragOffset.y
-
-      // Check if we've moved enough to consider this a drag
-      const dx = Math.abs(e.touches[0].clientX - dragStartPosRef.current.x)
-      const dy = Math.abs(e.touches[0].clientY - dragStartPosRef.current.y)
-      if (dx > 5 || dy > 5) {
-        hasDraggedRef.current = true
-      }
-
-      positionRef.current = { x: newX, y: newY }
-
-      // Use requestAnimationFrame for smooth animation
-      requestAnimationFrame(() => {
-        if (itemRef.current) {
-          itemRef.current.style.left = `${newX}px`
-          itemRef.current.style.top = `${newY}px`
-        }
-      })
-    }
-  }
-
-  // Handle mouse up to stop dragging
-  const handleMouseUp = (e: MouseEvent) => {
-    if (isDragging) {
-      setIsDragging(false)
-      onPositionChange(id, positionRef.current)
-
-      // If this was a drag (not just a click), prevent the subsequent click event
-      if (hasDraggedRef.current) {
-        // Add a small delay to prevent the click event
-        setTimeout(() => {
-          hasDraggedRef.current = false
-        }, 10)
-
-        // Add a one-time click event listener to prevent the next click
-        const preventNextClick = (e: MouseEvent) => {
-          e.stopPropagation()
-          window.removeEventListener("click", preventNextClick, true)
-        }
-        window.addEventListener("click", preventNextClick, true)
-      }
-    }
-  }
-
-  // Handle touch end
-  const handleTouchEnd = (e: TouchEvent) => {
-    if (isDragging) {
-      setIsDragging(false)
-      onPositionChange(id, positionRef.current)
-
-      // If this was a drag (not just a tap), prevent the subsequent click event
-      if (hasDraggedRef.current) {
-        setTimeout(() => {
-          hasDraggedRef.current = false
-        }, 10)
-      }
-    }
-  }
-
-  // Add and remove event listeners
+  // 当组件挂载时设置初始位置
   useEffect(() => {
-    if (isDragging) {
-      window.addEventListener("mousemove", handleMouseMove)
-      window.addEventListener("mouseup", handleMouseUp)
-      window.addEventListener("touchmove", handleTouchMove)
-      window.addEventListener("touchend", handleTouchEnd)
-    }
+    x.set(initialPosition.x)
+    y.set(initialPosition.y)
+  }, [initialPosition.x, initialPosition.y])
 
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove)
-      window.removeEventListener("mouseup", handleMouseUp)
-      window.removeEventListener("touchmove", handleTouchMove)
-      window.removeEventListener("touchend", handleTouchEnd)
-    }
-  }, [isDragging, dragOffset])
+  // 处理拖拽开始
+  const handleDragStart = () => {
+    setIsDragging(true)
+    onDragStart(id)
+    hasDraggedRef.current = false
+  }
 
-  useEffect(() => {
-    if (itemRef.current) {
-      itemRef.current.style.left = `${initialPosition.x}px`
-      itemRef.current.style.top = `${initialPosition.y}px`
-    }
-  }, [])
+  // 处理拖拽结束
+  const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    setIsDragging(false)
+    const newPosition = { x: x.get(), y: y.get() }
+    onPositionChange(id, newPosition)
 
-  // Clone children and pass isDragging prop
+    // 如果拖动距离超过阈值，则视为拖拽而非点击
+    if (Math.abs(info.offset.x) > 5 || Math.abs(info.offset.y) > 5) {
+      hasDraggedRef.current = true
+
+      // 添加短暂延迟以防止后续点击事件
+      setTimeout(() => {
+        hasDraggedRef.current = false
+      }, 100)
+    }
+  }
+
+  // 克隆子组件并传递 isDragging 属性
   const childrenWithProps = React.Children.map(children, (child) => {
     if (React.isValidElement(child)) {
-      return React.cloneElement(child, { isDragging: isDragging } as { isDragging: boolean })
+      return React.cloneElement(child, { isDragging } as { isDragging: boolean })
     }
     return child
   })
 
   return (
-    <div
-      ref={itemRef}
-      className={`absolute ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
+    <motion.div
       style={{
-        left: `${initialPosition.x}px`,
-        top: `${initialPosition.y}px`,
-        transform: `rotate(${rotation}deg)`,
-        touchAction: "none",
-        zIndex: zIndex,
-        willChange: "transform, left, top",
+        x,
+        y,
+        zIndex: isDragging ? 999 : zIndex,
+        rotate: rotation,
+        cursor: isDragging ? "grabbing" : "grab",
+        position: "absolute",
+        touchAction: "none"
       }}
-      onMouseDown={handleMouseDown}
-      onTouchStart={handleTouchStart}
+      drag
+      dragMomentum={false}
+      dragElastic={0.1}
+      whileDrag={{
+        scale: 1.02,
+        transition: { duration: 0.1 }
+      }}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
       onClick={(e) => {
-        // If we just finished dragging, prevent the click
+        // 如果刚结束拖拽，则阻止点击
         if (hasDraggedRef.current) {
           e.stopPropagation()
           e.preventDefault()
         }
       }}
+      transition={{
+        type: "spring",
+        damping: 40,
+        stiffness: 400
+      }}
     >
       {childrenWithProps}
-    </div>
+    </motion.div>
   )
 }
 

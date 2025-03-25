@@ -14,6 +14,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "exif-js": "^2.3.0",
+    "framer-motion": "^12.5.0",
     "lucide-react": "^0.482.0",
     "next": "^15.2.2",
     "react": "^18",
