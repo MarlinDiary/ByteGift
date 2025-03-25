@@ -297,7 +297,7 @@ export default function Home() {
   }
 
   const handleAddDoodle = () => {
-    setIsDoodling(true)
+    setIsDoodling(!isDoodling)
   }
 
   const handleSaveDoodle = (svgData: string) => {
@@ -415,7 +415,7 @@ export default function Home() {
 
       {/* Toolbar - 当涂鸦模式时添加动画类 */}
       <div
-        className={`fixed bottom-0 left-0 right-0 w-full transition-transform duration-500 ${isDoodling ? "translate-y-full" : ""}`}
+        className="fixed bottom-0 left-0 right-0 w-full"
       >
         <Toolbar
           onAddPhoto={handleAddPhoto}
@@ -423,12 +423,14 @@ export default function Home() {
           onRecordVoice={handleRecordVoice}
           onAddSpotify={handleAddSpotify}
           onAddDoodle={handleAddDoodle}
+          onSaveDoodle={handleSaveDoodle}
           isRecording={isRecording}
+          isDoodling={isDoodling}
         />
       </div>
 
-      {/* 涂鸦画布 - 仅在涂鸦模式时显示 */}
-      {isDoodling && <DoodleCanvas onSave={handleSaveDoodle} onCancel={handleCancelDoodle} />}
+      {/* 涂鸦画布 - 已集成到Toolbar中 */}
+      {/* {isDoodling && <DoodleCanvas onSave={handleSaveDoodle} onCancel={handleCancelDoodle} />} */}
 
       <style jsx>{`
       @keyframes slide-up {
