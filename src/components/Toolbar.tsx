@@ -91,9 +91,9 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   const bottomNoteStyles = getColorStyles(noteColors[colorIndices[2]])
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 mx-auto w-full">
-      <div className="relative h-32 flex justify-center items-center border-2 border-white/30 bg-white/10 backdrop-blur-sm">
-        <div className="relative max-w-5xl w-full h-full px-4 mx-auto flex justify-between items-center z-10">
+    <div className="fixed bottom-0 left-0 right-0 mx-auto w-full max-w-4xl px-4">
+      <div className="relative h-32 rounded-t-2xl flex justify-center items-center border-2 border-white/30 shadow-[0_8px_32px_rgba(0,0,0,0.15)] bg-white/20 backdrop-blur-md">
+        <div className="relative w-full h-full px-8 flex justify-between items-center z-10">
           {/* 拍立得组件 */}
           <Polaroid onClick={onAddPhoto} />
 
