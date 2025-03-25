@@ -43,7 +43,7 @@ export const DraggableItem: React.FC<DraggableItemProps> = ({
   // 处理拖拽开始
   const handleDragStart = () => {
     setIsDragging(true)
-    onDragStart(id)
+    onDragStart(id)  // 通知父组件，让其更新层级
     hasDraggedRef.current = false
   }
 
@@ -90,8 +90,8 @@ export const DraggableItem: React.FC<DraggableItemProps> = ({
       style={{
         x,
         y,
-        // 直接使用父组件传递的zIndex，在拖拽时临时提高一点层级以确保视觉效果
-        zIndex: isDragging ? zIndex + 0.1 : zIndex,
+        // 在拖拽时直接使用较高的层级以确保它在最上面
+        zIndex: isDragging ? 9999 : zIndex,  // 拖拽时使用极高的层级值
         rotate: rotation,
         cursor: isDragging ? "grabbing" : "grab",
         position: "absolute",
