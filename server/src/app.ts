@@ -50,7 +50,7 @@ app.get('/', (req, res) => {
 app.use('/api/upload', uploadRoutes);
 
 // 分享路由
-app.use('/api/from', shareRoutes);
+app.use('/api/share', shareRoutes);
 
 // 错误处理中间件
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
