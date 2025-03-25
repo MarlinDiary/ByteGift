@@ -268,6 +268,47 @@ export const DoodleCanvas: React.FC<DoodleCanvasProps> = ({ onSave, onCancel }) 
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
+      {/* 绘画工具 UI */}
+      <div className="absolute left-0 right-0 top-4 px-6 flex justify-between items-center">
+        {/* 取消按钮 */}
+        <button
+          className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-gray-700 hover:bg-white/30 transition-colors"
+          onClick={handleCancelDoodle}
+          aria-label="取消涂鸦"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+          </svg>
+        </button>
+
+        {/* 颜色选择器 */}
+        <div className="flex justify-center items-center p-2 gap-3 bg-white/20 backdrop-blur-md rounded-full color-picker">
+          {colors.map((color) => (
+            <button
+              key={color}
+              className={`w-7 h-7 rounded-full transition-all duration-150 ${selectedColor === color
+                ? "scale-110"
+                : "hover:scale-105"
+                }`}
+              style={{ backgroundColor: color }}
+              onClick={() => setSelectedColor(color)}
+              aria-label={`选择${color}颜色`}
+            />
+          ))}
+        </div>
+
+        {/* 保存按钮 */}
+        <button
+          className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-blue-500 hover:bg-white/30 transition-colors"
+          onClick={handleSaveDoodle}
+          aria-label="保存涂鸦"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+          </svg>
+        </button>
+      </div>
+
       <svg ref={svgRef} width="100%" height="100%" className="w-full h-full">
         {/* 已完成的笔画 */}
         {strokes.map((stroke, index) => (
@@ -317,55 +358,6 @@ export const DoodleCanvas: React.FC<DoodleCanvasProps> = ({ onSave, onCancel }) 
           </React.Fragment>
         )}
       </svg>
-
-      {/* 绘画工具 UI */}
-      <div className="absolute left-1/2 transform -translate-x-1/2 top-4 flex justify-center items-center p-2 gap-3 bg-white rounded-full shadow-lg border border-gray-100 z-10 color-picker">
-        {colors.map((color) => (
-          <button
-            key={color}
-            className={`w-7 h-7 rounded-full transition-colors duration-150 ${selectedColor === color
-              ? "border-2 border-white outline outline-2 outline-gray-400"
-              : "hover:opacity-90"
-              }`}
-            style={{ backgroundColor: color }}
-            onClick={() => setSelectedColor(color)}
-            aria-label={`选择${color}颜色`}
-          />
-        ))}
-      </div>
-
-      {/* 清除按钮 */}
-      <button
-        className="absolute bottom-6 left-6 w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 shadow hover:bg-gray-300 transition-colors z-10"
-        onClick={handleCancelDoodle}
-        aria-label="取消涂鸦"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-          <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-        </svg>
-      </button>
-
-      {/* 保存按钮 */}
-      <button
-        className="absolute bottom-6 right-6 w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white shadow hover:bg-blue-600 transition-colors z-10"
-        onClick={handleSaveDoodle}
-        aria-label="保存涂鸦"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-        </svg>
-      </button>
-
-      {/* 清除画布按钮 */}
-      <button
-        className="absolute bottom-6 left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 shadow hover:bg-gray-300 transition-colors z-10"
-        onClick={clearCanvas}
-        aria-label="清除画布"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-          <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-        </svg>
-      </button>
     </div>
   )
 }
