@@ -38,6 +38,7 @@ export default function Home() {
   const [highestZIndex, setHighestZIndex] = useState(10) // 初始z-index值
   const [isRecording, setIsRecording] = useState(false)
   const [isDoodling, setIsDoodling] = useState(false)
+  const [isMediaInput, setIsMediaInput] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const canvasRef = useRef<HTMLDivElement>(null)
   const recordingTimerId = useRef<NodeJS.Timeout | null>(null)
@@ -358,6 +359,11 @@ export default function Home() {
     );
   };
 
+  // 切换媒体输入模式
+  const handleToggleMediaInput = () => {
+    setIsMediaInput(!isMediaInput)
+  }
+
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
       <GridBackground />
@@ -425,6 +431,8 @@ export default function Home() {
           onSaveDoodle={handleSaveDoodle}
           isRecording={isRecording}
           isDoodling={isDoodling}
+          isMediaInput={isMediaInput}
+          onToggleMediaInput={handleToggleMediaInput}
         />
       </div>
 

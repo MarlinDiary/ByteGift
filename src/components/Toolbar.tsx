@@ -6,6 +6,7 @@ import { MicrophoneIcon } from "./MicrophoneIcon"
 import { MediaIcon } from "./MediaIcon"
 import { PencilIcon } from "./PencilIcon"
 import { DoodleCanvas } from "./DoodleCanvas"
+import { MediaInputPanel } from "./MediaInputPanel"
 import { motion, AnimatePresence } from "framer-motion"
 
 interface Point {
@@ -29,6 +30,8 @@ interface ToolbarProps {
   onSaveDoodle: (svgData: string) => void
   isRecording: boolean
   isDoodling?: boolean
+  isMediaInput?: boolean
+  onToggleMediaInput?: () => void
 }
 
 export const Toolbar: React.FC<ToolbarProps> = ({
@@ -40,6 +43,8 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   onSaveDoodle,
   isRecording,
   isDoodling = false,
+  isMediaInput = false,
+  onToggleMediaInput = () => { },
 }) => {
   // 可用的便签颜色
   const noteColors = ["yellow", "blue", "green", "pink", "purple", "amber"]
@@ -50,14 +55,14 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   // 控制工具是否显示
   const [showTools, setShowTools] = useState(true)
 
-  // 在绘画模式变更时处理工具显示状态
+  // 在绘画模式或媒体输入模式变更时处理工具显示状态
   useEffect(() => {
-    if (isDoodling) {
+    if (isDoodling || isMediaInput) {
       setShowTools(false)
     } else {
       setShowTools(true)
     }
-  }, [isDoodling])
+  }, [isDoodling, isMediaInput])
 
   // 处理便签创建和颜色轮换
   const handleAddNote = () => {
@@ -69,6 +74,12 @@ export const Toolbar: React.FC<ToolbarProps> = ({
     ]
     setColorIndices(newIndices)
     onAddNote(currentColor)
+  }
+
+  // 处理媒体链接保存
+  const handleSaveMedia = (url: string) => {
+    onAddMedia(url)
+    onToggleMediaInput()
   }
 
   // 根据颜色名称获取颜色样式
@@ -194,11 +205,16 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         className="relative rounded-t-2xl border-2 border-white/30 shadow-[0_8px_32px_rgba(0,0,0,0.15)] bg-white/20 backdrop-blur-md"
         variants={backgroundVariants}
         initial="initial"
-        animate={isDoodling ? "expanded" : "normal"}
+        animate={isDoodling || isMediaInput ? "expanded" : "normal"}
       >
         {/* 绘画画布 */}
         {isDoodling && (
           <DoodleCanvas onSave={onSaveDoodle} onCancel={onAddDoodle} />
+        )}
+
+        {/* 媒体输入面板 */}
+        {isMediaInput && (
+          <MediaInputPanel onSave={handleSaveMedia} onCancel={onToggleMediaInput} />
         )}
       </motion.div>
 
@@ -278,7 +294,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
               animate="visible"
               exit="exit"
             >
-              <MediaIcon onAddMedia={onAddMedia} />
+              <MediaIcon onAddMedia={onToggleMediaInput} />
             </motion.div>
 
             {/* Pencil Icon */}

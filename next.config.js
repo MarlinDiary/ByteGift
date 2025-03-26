@@ -8,6 +8,16 @@ const nextConfig = {
                 port: '5001',
                 pathname: '/uploads/**',
             },
+            {
+                protocol: 'https',
+                hostname: 'i.scdn.co',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: '*.spotifycdn.com',
+                pathname: '/**',
+            },
         ],
     },
 };
