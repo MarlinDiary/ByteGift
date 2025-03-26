@@ -1,8 +1,8 @@
 "use client"
 
 import type React from "react"
-import { useState, useRef, useEffect } from "react"
-import { Loader2, X, AlertCircle } from "lucide-react"
+import { useState, useEffect } from "react"
+import { Loader2, AlertCircle } from "lucide-react"
 
 interface MediaContentProps {
     initialUrl?: string
@@ -23,14 +23,10 @@ export const MediaContent: React.FC<MediaContentProps> = ({
     isDragging = false,
 }) => {
     const [url, setUrl] = useState(initialUrl)
-    const [displayUrl, setDisplayUrl] = useState(initialUrl)
-    const [isEditing, setIsEditing] = useState(false)
-    const [isHovering, setIsHovering] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
     const [iframeSrc, setIframeSrc] = useState<string | null>(null)
     const [error, setError] = useState<string | null>(null)
     const [embedHeight, setEmbedHeight] = useState<number>(152)
-    const inputRef = useRef<HTMLInputElement>(null)
 
     // 定义支持的媒体平台
     const mediaPlatforms: MediaPlatform[] = [
@@ -134,66 +130,11 @@ export const MediaContent: React.FC<MediaContentProps> = ({
         loadEmbed()
     }, [url])
 
-    // Handle URL submission
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault()
-        setUrl(displayUrl)
-        setIsEditing(false)
-        setIsLoading(true)
-    }
-
-    // Focus input when editing starts
-    useEffect(() => {
-        if (isEditing && inputRef.current) {
-            inputRef.current.focus()
-            inputRef.current.select()
-        }
-    }, [isEditing])
-
     return (
         <div
-            className={`transition-shadow duration-300 rounded-lg ${isDragging ? "shadow-2xl" : "shadow-lg hover:shadow-2xl"
-                }`}
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => {
-                setIsHovering(false)
-                setIsEditing(false)
-            }}
+            className={`transition-shadow duration-300 rounded-lg ${isDragging ? "shadow-2xl" : "shadow-lg hover:shadow-2xl"}`}
         >
             <div className="bg-white rounded-lg border border-gray-200 overflow-hidden w-[300px]">
-                {/* URL input - only visible on hover */}
-                <div
-                    className={`bg-gray-100 transition-all duration-300 ${isHovering ? "opacity-100 h-10 border-b border-gray-200 p-2" : "opacity-0 h-0 p-0 overflow-hidden"
-                        }`}
-                >
-                    {/* URL input field */}
-                    <form onSubmit={handleSubmit} className="w-full relative">
-                        <input
-                            ref={inputRef}
-                            type="text"
-                            value={displayUrl}
-                            onChange={(e) => setDisplayUrl(e.target.value)}
-                            onFocus={() => setIsEditing(true)}
-                            onBlur={() => !displayUrl && setDisplayUrl(url)}
-                            className="w-full py-1 px-3 text-xs bg-white border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-blue-500"
-                            placeholder="输入媒体链接 (Spotify, YouTube, SoundCloud 等)"
-                        />
-                        {isEditing && (
-                            <button
-                                type="button"
-                                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                                onClick={() => {
-                                    setDisplayUrl("")
-                                    inputRef.current?.focus()
-                                }}
-                            >
-                                <X size={12} />
-                            </button>
-                        )}
-                    </form>
-                </div>
-
-                {/* Content area */}
                 <div className="p-2">
                     {isLoading ? (
                         <div className="h-[152px] flex items-center justify-center bg-white rounded-b-lg">
@@ -207,7 +148,7 @@ export const MediaContent: React.FC<MediaContentProps> = ({
                         </div>
                     ) : (
                         iframeSrc && (
-                            <div className="overflow-hidden rounded-b-lg">
+                            <div className="overflow-hidden rounded-b-lg relative">
                                 <iframe
                                     src={iframeSrc}
                                     width="100%"
@@ -217,6 +158,12 @@ export const MediaContent: React.FC<MediaContentProps> = ({
                                     loading="lazy"
                                     className="transform-gpu"
                                 />
+                                {isDragging && (
+                                    <div
+                                        className="absolute inset-0 bg-transparent cursor-grab"
+                                        aria-hidden="true"
+                                    />
+                                )}
                             </div>
                         )
                     )}
@@ -227,4 +174,3 @@ export const MediaContent: React.FC<MediaContentProps> = ({
 }
 
 export default MediaContent
-
