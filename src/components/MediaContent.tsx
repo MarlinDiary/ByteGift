@@ -134,7 +134,7 @@ export const MediaContent: React.FC<MediaContentProps> = ({
         <div
             className={`transition-shadow duration-300 rounded-lg ${isDragging ? "shadow-2xl" : "shadow-lg hover:shadow-2xl"}`}
         >
-            <div className="bg-white rounded-lg border border-gray-200 overflow-hidden w-[300px]">
+            <div className="bg-white rounded-lg border border-gray-200 overflow-hidden w-[400px]">
                 <div className="p-2">
                     {isLoading ? (
                         <div className="h-[152px] flex items-center justify-center bg-white rounded-b-lg">
