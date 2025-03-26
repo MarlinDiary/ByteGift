@@ -130,43 +130,55 @@ export const MediaContent: React.FC<MediaContentProps> = ({
         loadEmbed()
     }, [url])
 
+    const renderContent = () => {
+        if (isLoading) {
+            return (
+                <div className="h-[152px] flex items-center justify-center bg-white rounded-lg">
+                    <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+                </div>
+            )
+        }
+
+        if (error) {
+            return (
+                <div className="h-[152px] flex flex-col items-center justify-center bg-white rounded-lg text-red-500 text-center p-4">
+                    <AlertCircle className="h-6 w-6 mb-2" />
+                    <p className="text-sm">{error}</p>
+                    <p className="text-xs mt-1 text-gray-500">支持: Spotify, YouTube, SoundCloud, Vimeo 链接</p>
+                </div>
+            )
+        }
+
+        if (iframeSrc) {
+            return (
+                <div className="overflow-hidden rounded-lg relative">
+                    <iframe
+                        src={iframeSrc}
+                        width="100%"
+                        height={embedHeight}
+                        frameBorder="0"
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                        loading="lazy"
+                        className="transform-gpu"
+                    />
+                    {isDragging && (
+                        <div
+                            className="absolute inset-0 bg-transparent cursor-grab"
+                            aria-hidden="true"
+                        />
+                    )}
+                </div>
+            )
+        }
+
+        return null
+    }
+
     return (
-        <div
-            className={`transition-shadow duration-300 rounded-2xl ${isDragging ? "shadow-2xl" : "shadow-lg hover:shadow-2xl"}`}
-        >
+        <div className={`transition-shadow duration-300 rounded-2xl ${isDragging ? "shadow-2xl" : "shadow-lg hover:shadow-2xl"}`}>
             <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden w-[400px]">
                 <div className="p-3">
-                    {isLoading ? (
-                        <div className="h-[152px] flex items-center justify-center bg-white rounded-lg">
-                            <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
-                        </div>
-                    ) : error ? (
-                        <div className="h-[152px] flex flex-col items-center justify-center bg-white rounded-lg text-red-500 text-center p-4">
-                            <AlertCircle className="h-6 w-6 mb-2" />
-                            <p className="text-sm">{error}</p>
-                            <p className="text-xs mt-1 text-gray-500">支持: Spotify, YouTube, SoundCloud, Vimeo 链接</p>
-                        </div>
-                    ) : (
-                        iframeSrc && (
-                            <div className="overflow-hidden rounded-lg relative">
-                                <iframe
-                                    src={iframeSrc}
-                                    width="100%"
-                                    height={embedHeight}
-                                    frameBorder="0"
-                                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                                    loading="lazy"
-                                    className="transform-gpu"
-                                />
-                                {isDragging && (
-                                    <div
-                                        className="absolute inset-0 bg-transparent cursor-grab"
-                                        aria-hidden="true"
-                                    />
-                                )}
-                            </div>
-                        )
-                    )}
+                    {renderContent()}
                 </div>
             </div>
         </div>
