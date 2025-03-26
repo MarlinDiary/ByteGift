@@ -18,7 +18,7 @@ const shareSchema = new mongoose.Schema({
             id: String,
             type: {
                 type: String,
-                enum: ['photo', 'note', 'spotify', 'doodle', 'audio']
+                enum: ['photo', 'note', 'spotify', 'doodle', 'audio', 'media']
             },
             position: {
                 x: Number,
